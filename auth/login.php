@@ -1,6 +1,9 @@
 <?php require "../includes/header.php" ?>
 <?php require "../config/config.php"?>
 <?php 
+  if(isset($_SESSION["username"])){
+    header("location: ".APPURL."/index.php");
+  }
   if(isset($_POST["login"])){
     if($_POST['email'] == '' OR $_POST['password'] == ''){
 			echo "<script>alert('one or more inputs are empty')</script>";
@@ -16,6 +19,8 @@
         if(password_verify($password, $data['password'])){
           $_SESSION['username'] = $data['username'];
           $_SESSION['email'] = $data['email'];
+          $_SESSION['user_id'] = $data['id'];
+          $_SESSION['user_image'] = $data['avatar'];
           header("Location: ".APPURL."/index.php");
         }else{
   	  		echo "<script>alert('Incorrect password')</script>";

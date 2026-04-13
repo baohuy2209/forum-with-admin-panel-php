@@ -1,44 +1,53 @@
-        <div class="col-md-4">
-            <div class="sidebar">
-
-
-                <div class="block">
-                    <h3>Categories</h3>
-                    <div class="list-group block ">
-                        <a href="#" class="list-group-item active">All Topics <span
-                                class="badge pull-right">14</span></a>
-                        <a href="#" class="list-group-item">Design<span class="color badge pull-right">4</span></a>
-                        <a href="#" class="list-group-item">Development<span class="color badge pull-right">9</span></a>
-                        <a href="#" class="list-group-item">Business & Marketing <span
-                                class="color badge pull-right">12</span></a>
-                        <a href="#" class="list-group-item">Search Engines<span
-                                class="color badge pull-right">7</span></a>
-                        <a href="#" class="list-group-item">Cloud & Hosting <span
-                                class="color badge pull-right">3</span></a>
-                    </div>
-                </div>
-
-                <div class="block" style="margin-top: 20px;">
-                    <h3 class="margin-top: 40px">Forum Statistics</h3>
-                    <div class="list-group">
-                        <a href="#" class="list-group-item">Total Number of Users:<span
-                                class="color badge pull-right">4</span></a>
-                        <a href="#" class="list-group-item">Total Number of Topics:<span
-                                class="color badge pull-right">9</span></a>
-                        <a href="#" class="list-group-item">Total Number of Categories: <span
-                                class="color badge pull-right">12</span></a>
-
-                    </div>
-                </div>
+<?php 
+        $numAllTopics = $conn->query("SELECT COUNT(id) as num FROM topics");
+        $numTopics = $numAllTopics->fetch(PDO::FETCH_OBJ);
+        $sql = "SELECT category, COUNT(id) AS topic_count 
+        FROM topics 
+        GROUP BY category
+        ORDER BY category ASC";
+        $categories = $conn->query($sql);
+        $listcategories = $categories->fetchAll(PDO::FETCH_OBJ);
+        $numUser = $conn->query("SELECT COUNT(id) as num FROM users");
+        $numUsers = $numUser->fetch(PDO::FETCH_OBJ);
+        $numCategory = $conn->query("SELECT COUNT(category) as num FROM topics GROUP BY category");
+        $numCategories = $numCategory->fetch(PDO::FETCH_OBJ);
+?>
+<div class="col-md-4">
+    <div class="sidebar">
+        <div class="block">
+            <h3>Categories</h3>
+            <div class="list-group block ">
+                <a href="#" class="list-group-item active">All Topics <span class="badge pull-right">
+                        <?php echo $numTopics->num; ?>
+                    </span></a>
+                <?php foreach($listcategories as $category) : ?>
+                <a href="#" class="list-group-item"><?php echo $category->category; ?><span
+                        class="color badge pull-right"><?php echo $category->topic_count; ?></span></a>
+                <?php endforeach;?>
             </div>
         </div>
-        </div>
-        </div>
-        <!-- Bootstrap core JavaScript
-    ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="<?php echo APPURL; ?>/js/bootstrap.js"></script>
-        </body>
 
-        </html>
+        <div class="block" style="margin-top: 20px;">
+            <h3 class="margin-top: 40px">Forum Statistics</h3>
+            <div class="list-group">
+                <a href="#" class="list-group-item">Total Number of Users:<span
+                        class="color badge pull-right"><?php echo $numUsers->num; ?></span></a>
+                <a href="#" class="list-group-item">Total Number of Topics:<span
+                        class="color badge pull-right"><?php echo $numTopics->num; ?></span></a>
+                <a href="#" class="list-group-item">Total Number of Categories: <span
+                        class="color badge pull-right"><?php echo $numCategories->num; ?></span></a>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<!-- Bootstrap core JavaScript
+    ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="<?php echo APPURL; ?>/js/bootstrap.js"></script>
+</body>
+
+</html>

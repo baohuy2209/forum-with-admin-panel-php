@@ -1,4 +1,17 @@
 <?php require "includes/header.php" ?>
+<?php require "config/config.php"?>
+<?php 
+    $sql = "SELECT t.id, t.title, t.category, t.body, t.created_at,
+               u.name, u.username, u.avatar, COUNT(r.id) AS reply_count
+        FROM topics t
+        JOIN users u ON t.user_id = u.id
+        LEFT JOIN replies r ON r.topic_id = t.id
+        GROUP BY t.id
+        ORDER BY t.created_at DESC";
+    $allTopics = $conn->query($sql);
+    $allTopics->execute(); 
+    $listTopics = $allTopics->fetchAll(PDO::FETCH_OBJ);
+?>
 <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -9,92 +22,30 @@
                     <div class="clearfix"></div>
                     <hr>
                     <ul id="topics">
+                        <?php foreach($listTopics as $topic): ?>
                         <li class="topic">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <img class="avatar pull-left" src="img/gravatar.png" />
+                                    <img class="avatar pull-left" style="border-radius: 50%"
+                                        src="<?= !empty($topic->avatar) ? 'img/' . $topic->avatar : 'img/gravatar.png' ?>" />
                                 </div>
                                 <div class="col-md-10">
                                     <div class="topic-content pull-right">
-                                        <h3><a href="topic.html">How did you learn CSS and HTML?</a></h3>
+                                        <h3><a
+                                                href="<?php echo APPURL; ?>/topics/topic.php?id=<?php echo $topic->id; ?>"><?php echo $topic->title; ?></a>
+                                        </h3>
                                         <div class="topic-info">
-                                            <a href="category.html">Development</a> >> <a href="profile.html">MOhamed
-                                                Hassan</a> >> Posted on: June 12, 2014
-                                            <span class="color badge pull-right">3</span>
+                                            <a href="category.html"><?php echo $topic->category; ?></a> >> <a
+                                                href="profile.html"><?php echo $topic->username; ?></a> >> Posted on:
+                                            <?php echo date('M', strtotime($topic->created_at)).', '.date('d', strtotime($topic->created_at)).' '.date('Y', strtotime($topic->created_at));?>
+                                            <span class="color badge pull-right">
+                                                <?php echo $topic->reply_count; ?></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </li>
-                        <li class="topic">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <img class="avatar pull-left" src="img/gravatar.png" />
-                                </div>
-                                <div class="col-md-10">
-                                    <div class="topic-content pull-right">
-                                        <h3><a href="topic.html">How to create new page dynamically in php</a> </h3>
-                                        <div class="topic-info">
-                                            <a href="category.html">Development</a> >> <a href="profile.html">MOhamed
-                                                Hassan</a> >> Posted on: June 12, 2014
-                                            <span class="color badge pull-right">7</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="topic">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <img class="avatar pull-left" src="img/gravatar.png" />
-                                </div>
-                                <div class="col-md-10">
-                                    <div class="topic-content pull-right">
-                                        <h3><a href="topic.html">Google Panda - Who's affected?</a></h3>
-                                        <div class="topic-info">
-                                            <a href="category.html">Search Engines</a> >> <a href="profile.html">MOhamed
-                                                Hassan</a> >> Posted on: June 12, 2014
-                                            <span class="color badge pull-right">4</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="topic">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <img class="avatar pull-left" src="img/gravatar.png" />
-                                </div>
-                                <div class="col-md-10">
-                                    <div class="topic-content pull-right">
-                                        <h3><a href="topic.html">Is Css3 is not working in IE8 and IE9?</a></h3>
-                                        <div class="topic-info">
-                                            <a href="category.html">Design</a> >> <a href="profile.html">MOhamed
-                                                Hassan</a>
-                                            >> Posted on: June 12, 2014
-                                            <span class="color badge pull-right">2</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="topic">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <img class="avatar pull-left" src="img/gravatar.png" />
-                                </div>
-                                <div class="col-md-10">
-                                    <div class="topic-content pull-right">
-                                        <h3><a href="topic.html">Best Web Application Frameworks</a></h3>
-                                        <div class="topic-info">
-                                            <a href="category.html">Development</a> >> <a href="profile.html">MOhamed
-                                                Hassan</a> >> Posted on: June 12, 2014
-                                            <span class="color badge pull-right">4</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
+                        <?php endforeach; ?>
                     </ul>
 
                 </div>

@@ -1,8 +1,28 @@
-<?php require "includes/header.php"?>
-<?php require "config/config.php"?>
+<?php require "../includes/header.php"?>
+<?php require "../config/config.php"?>
 <?php 
+    if(!isset($_SESSION["username"])){
+        header("location: ".APPURL."/index.php");
+    }
     if(isset($_POST["submit"])){
-        
+        if(empty($_POST["title"]) OR empty($_POST["category"]) OR empty($_POST["body"])){
+			echo "<script>alert('one or more inputs are empty')</script>";
+        }else{
+            $title = $_POST["title"];
+            $category = $_POST["category"];
+            $body = $_POST["body"];
+            $username = $_SESSION["username"]; 
+            $userid = $_SESSION["user_id"];
+            $insert = $conn->prepare("INSERT INTO topics (title, category, body, username, user_id) VALUES (:title, :category, :body, :username, :user_id)"); 
+            $insert->execute([
+                ":title" => $title,
+                ":category" => $category, 
+                ":body" => $body, 
+                ":username"=> $username,
+                ":user_id"=> $userid
+            ]);
+            header("location: ".APPURL."/index.php");
+        }
     }
 ?>
 <div class="container">
@@ -41,4 +61,4 @@
                 </div>
             </div>
         </div>
-        <?php require "includes/footer.php" ?>
+        <?php require "../includes/footer.php" ?>

@@ -34,7 +34,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active"><a href="<?php echo APPURL; ?>/index.php">Home</a></li>
                     <?php if(isset($_SESSION["username"])): ?>
-                    <li><a href="<?php echo APPURL; ?>/create.php">Create Topic</a></li>
+                    <li><a href="<?php echo APPURL; ?>/topics/create.php">Create Topic</a></li>
                     <li><a href="#"><?php echo $_SESSION["username"]; ?></a></li>
                     <li><a href="<?php echo APPURL; ?>/auth/logout.php">Logout</a></li>
                     <?php endif; ?>

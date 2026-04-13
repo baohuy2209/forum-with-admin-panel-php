@@ -1,6 +1,9 @@
 <?php require "../includes/header.php"?>
 <?php require "../config/config.php"?>
 <?php 
+    if(isset($_SESSION["username"])){
+        header("location: ".APPURL."/index.php");
+    }
 	if(isset($_POST["register"]) ) {
 		if(empty($_POST["name"]) OR empty($_POST["email"]) OR empty($_POST["username"]) OR empty($_POST["password"]) OR empty($_POST["confirmPassword"]) OR empty($_POST["about"])){
 			echo "<script>alert('one or more inputs are empty')</script>";
