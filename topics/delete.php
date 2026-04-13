@@ -16,5 +16,7 @@
             ]);
             header("location: ".APPURL."/index.php");
         }
+    }else{
+        header("location: ".APPURL."/404.php"); 
     }
 ?>

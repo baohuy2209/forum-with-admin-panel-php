@@ -35,7 +35,9 @@
                     <li class="active"><a href="<?php echo APPURL; ?>/index.php">Home</a></li>
                     <?php if(isset($_SESSION["username"])): ?>
                     <li><a href="<?php echo APPURL; ?>/topics/create.php">Create Topic</a></li>
-                    <li><a href="#"><?php echo $_SESSION["username"]; ?></a></li>
+                    <li><a
+                            href="<?php echo APPURL; ?>/users/edit-user.php?id=<?php echo $_SESSION["user_id"]; ?>"><?php echo $_SESSION["username"]; ?></a>
+                    </li>
                     <li><a href="<?php echo APPURL; ?>/auth/logout.php">Logout</a></li>
                     <?php endif; ?>
                     <?php if(!isset($_SESSION["username"])): ?>

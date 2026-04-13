@@ -15,5 +15,7 @@
             ]);
             header("location: ".APPURL."/topics/topic.php?id=".$_id."");
         }
+    }else{
+        header("location: ".APPURL."/404.php"); 
     }
 ?>

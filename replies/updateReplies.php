@@ -19,6 +19,8 @@
             ]);
             header("location: ".APPURL."/topics/topic.php?id=".$result->topic_id);
         }
+    }else{
+        header("location: ".APPURL."/404.php"); 
     }
 ?>
 <div class="container">

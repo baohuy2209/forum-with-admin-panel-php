@@ -1,16 +1,34 @@
 <?php require "includes/header.php" ?>
 <?php require "config/config.php"?>
 <?php 
-    $sql = "SELECT t.id, t.title, t.category, t.body, t.created_at,
+    if(isset($_GET["category"])){
+        $category = $_GET["category"];
+        $sql = "SELECT t.id, t.title, t.category, t.body, t.created_at,
                u.name, u.username, u.avatar, COUNT(r.id) AS reply_count
-        FROM topics t
-        JOIN users u ON t.user_id = u.id
-        LEFT JOIN replies r ON r.topic_id = t.id
-        GROUP BY t.id
-        ORDER BY t.created_at DESC";
-    $allTopics = $conn->query($sql);
-    $allTopics->execute(); 
-    $listTopics = $allTopics->fetchAll(PDO::FETCH_OBJ);
+            FROM topics t
+            JOIN users u ON t.user_id = u.id
+            LEFT JOIN replies r ON r.topic_id = t.id
+            WHERE LOWER(t.category) = LOWER(:category)
+            GROUP BY t.id
+            ORDER BY t.created_at DESC";
+        $allTopics = $conn->prepare($sql);
+        $allTopics->execute([
+            ":category"=> $category,
+        ]); 
+        $listTopics = $allTopics->fetchAll(PDO::FETCH_OBJ);
+    }else{
+        $sql = "SELECT t.id, t.title, t.category, t.body, t.created_at,
+               u.name, u.username, u.avatar, COUNT(r.id) AS reply_count
+            FROM topics t
+            JOIN users u ON t.user_id = u.id
+            LEFT JOIN replies r ON r.topic_id = t.id
+            GROUP BY t.id
+            ORDER BY t.created_at DESC";
+        $allTopics = $conn->query($sql);
+        $allTopics->execute(); 
+        $listTopics = $allTopics->fetchAll(PDO::FETCH_OBJ);
+    }
+    
 ?>
 <div class="container">
     <div class="row">
@@ -35,8 +53,9 @@
                                                 href="<?php echo APPURL; ?>/topics/topic.php?id=<?php echo $topic->id; ?>"><?php echo $topic->title; ?></a>
                                         </h3>
                                         <div class="topic-info">
-                                            <a href="category.html"><?php echo $topic->category; ?></a> >> <a
-                                                href="profile.html"><?php echo $topic->username; ?></a> >> Posted on:
+                                            <a
+                                                href="<?php echo APPURL."/index.php?category=".urlencode($topic->category)?>"><?php echo $topic->category; ?></a>
+                                            >> <a href="profile.html"><?php echo $topic->username; ?></a> >> Posted on:
                                             <?php echo date('M', strtotime($topic->created_at)).', '.date('d', strtotime($topic->created_at)).' '.date('Y', strtotime($topic->created_at));?>
                                             <span class="color badge pull-right">
                                                 <?php echo $topic->reply_count; ?></span>

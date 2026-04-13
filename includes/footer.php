@@ -1,10 +1,11 @@
 <?php 
         $numAllTopics = $conn->query("SELECT COUNT(id) as num FROM topics");
         $numTopics = $numAllTopics->fetch(PDO::FETCH_OBJ);
-        $sql = "SELECT category, COUNT(id) AS topic_count 
-        FROM topics 
-        GROUP BY category
-        ORDER BY category ASC";
+        $sql = "SELECT c.name as category, COUNT(t.id) AS topic_count 
+        FROM categories c
+        JOIN topics t ON c.name = t.category
+        GROUP BY c.id
+        ORDER BY c.name ASC";
         $categories = $conn->query($sql);
         $listcategories = $categories->fetchAll(PDO::FETCH_OBJ);
         $numUser = $conn->query("SELECT COUNT(id) as num FROM users");
@@ -17,11 +18,13 @@
         <div class="block">
             <h3>Categories</h3>
             <div class="list-group block ">
-                <a href="#" class="list-group-item active">All Topics <span class="badge pull-right">
+                <a href="<?php echo APPURL."/index.php"?>" class="list-group-item active">All Topics <span
+                        class="badge pull-right">
                         <?php echo $numTopics->num; ?>
                     </span></a>
                 <?php foreach($listcategories as $category) : ?>
-                <a href="#" class="list-group-item"><?php echo $category->category; ?><span
+                <a href="<?php echo APPURL."/index.php?category=".urlencode($category->category)?>"
+                    class="list-group-item"><?php echo $category->category; ?><span
                         class="color badge pull-right"><?php echo $category->topic_count; ?></span></a>
                 <?php endforeach;?>
             </div>

@@ -4,6 +4,9 @@
     if(!isset($_SESSION["username"])){
         header("location: ".APPURL."/index.php");
     }
+    $select = $conn->query("SELECT * FROM categories"); 
+    $select->execute();
+    $allCategories = $select->fetchAll(PDO::FETCH_OBJ);
     if(isset($_POST["submit"])){
         if(empty($_POST["title"]) OR empty($_POST["category"]) OR empty($_POST["body"])){
 			echo "<script>alert('one or more inputs are empty')</script>";
@@ -42,11 +45,9 @@
                         <div class="form-group">
                             <label>Category</label>
                             <select class="form-control" name="category">
-                                <option value="Design">Design</option>
-                                <option value="Development">Development</option>
-                                <option value="Business & Marketing">Business & Marketing</option>
-                                <option value="Search Engines">Search Engines</option>
-                                <option value="Cloud & Hosting">Cloud & Hosting</option>
+                                <?php foreach($allCategories as $category):?>
+                                <option value="<?php echo $category->name; ?>"><?php echo $category->name; ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                         <div class="form-group">
