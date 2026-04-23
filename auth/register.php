@@ -17,27 +17,34 @@
 			$avatar = $_FILES["avatar"]["name"]; 
 			$dir = "../img/".basename($avatar);
 			$checkExistEmail = $conn->query("SELECT * FROM users WHERE email='$email'");
+			$checkExistUsername = $conn->query("SELECT * FROM users WHERE username='$username'");
 			$checkExistEmail->execute();
-			if($checkExistEmail->rowCount() > 0) {
-				echo "<script>alert('Email already exists')</script>";
-			}else{
-				if($confirmPassword != $password){
-					echo "<script>alert('Confirm password is incorrect')</script>";
-				}else{
-					$insert = $conn->prepare("INSERT INTO users (name, email, username, password, about, avatar) VALUES (:name, :email, :username, :password, :about, :avatar)");
-					$insert->execute([
-						":name" => $name, 
-						":email"=> $email,
-						":username"=> $username,
-						":password"=> password_hash($password, PASSWORD_DEFAULT),
-						":about"=> $about,
-						":avatar"=> $avatar
-					]);
-					if(move_uploaded_file($_FILES["avatar"]["tmp_name"], $dir)){
-						header("location: ".APPURL."/auth/login.php");
-					}
-				}
-			}
+            $checkExistEmail->execute();
+            if($checkExistUsername->rowCount() > 0){
+				echo "<script>alert('Username already exists')</script>";
+            }else{
+                if($checkExistEmail->rowCount() > 0) {
+                    echo "<script>alert('Email already exists')</script>";
+                }else{
+                    if($confirmPassword != $password){
+                        echo "<script>alert('Confirm password is incorrect')</script>";
+                    }else{
+                        $insert = $conn->prepare("INSERT INTO users (name, email, username, password, about, avatar) VALUES (:name, :email, :username, :password, :about, :avatar)");
+                        $insert->execute([
+                            ":name" => $name, 
+                            ":email"=> $email,
+                            ":username"=> $username,
+                            ":password"=> password_hash($password, PASSWORD_DEFAULT),
+                            ":about"=> $about,
+                            ":avatar"=> $avatar
+                        ]);
+                        if(move_uploaded_file($_FILES["avatar"]["tmp_name"], $dir)){
+                            header("location: ".APPURL."/auth/login.php");
+                        }
+                    }
+                }
+            }
+
 		}
 	}
 ?>

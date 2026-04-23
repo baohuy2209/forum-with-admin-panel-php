@@ -10,4 +10,3 @@
         <a href="<?php echo APPURL; ?>/index.php" class="btn btn-primary">Go Home</a>
     </div>
 </div>
-<?php require "includes/footer.php"; ?>

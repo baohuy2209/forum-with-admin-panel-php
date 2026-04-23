@@ -76,7 +76,8 @@
                                                     ?></strong>
                                             </li>
                                             <li><?php echo $mainTopic->post_count; ?> Posts</li>
-                                            <li><a href="profile.php">Profile</a>
+                                            <li><a
+                                                    href="<?php echo APPURL; ?>/users/profile.php?name=<?php echo $mainTopic->username; ?>">Profile</a>
                                         </ul>
                                     </div>
                                 </div>
@@ -107,7 +108,8 @@
                                                 </strong>
                                             </li>
                                             <li><?php echo $reply->post_count; ?> Posts</li>
-                                            <li><a href="profile.php">Profile</a>
+                                            <li><a
+                                                    href="<?php echo APPURL; ?>/users/profile.php?name=<?php echo $reply->username ?>">Profile</a>
                                         </ul>
                                     </div>
                                 </div>

@@ -38,6 +38,9 @@
                     <li><a
                             href="<?php echo APPURL; ?>/users/edit-user.php?id=<?php echo $_SESSION["user_id"]; ?>"><?php echo $_SESSION["username"]; ?></a>
                     </li>
+                    <li><a href="<?php echo APPURL; ?>/users/profile.php?name=<?php echo $_SESSION["username"]; ?>">Public
+                            profile</a>
+                    </li>
                     <li><a href="<?php echo APPURL; ?>/auth/logout.php">Logout</a></li>
                     <?php endif; ?>
                     <?php if(!isset($_SESSION["username"])): ?>
