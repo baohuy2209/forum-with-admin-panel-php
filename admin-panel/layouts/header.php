@@ -1,6 +1,6 @@
 <?php 
     session_start();
-    define("APPURL", "http://localhost/forum-with-admin-panel-php/admin");
+    define("APPURL", "http://localhost/forum-with-admin-panel-php/admin-panel");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,50 +27,56 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarText">
+                    <?php if(isset($_SESSION["adminname"])):?>
                     <ul class="navbar-nav side-nav">
                         <li class="nav-item">
-                            <a class="nav-link text-white" style="margin-left: 20px;" href="index.html">Home
+                            <a class="nav-link text-white" style="margin-left: 20px;"
+                                href="<?php echo APPURL; ?>/index.PHP">Home
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="admins/admins.html" style="margin-left: 20px;">Admins</a>
+                            <a class="nav-link" href="<?php echo APPURL; ?>/admins/admins.php"
+                                style="margin-left: 20px;">Admins</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="categories-admins/show-categories.html"
+                            <a class="nav-link" href="<?php echo APPURL; ?>/categories-admins/show-categories.php"
                                 style="margin-left: 20px;">Categories</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="topics-admins/show-topics.html"
+                            <a class="nav-link" href="<?php echo APPURL; ?>/topics-admins/show-topics.php"
                                 style="margin-left: 20px;">Topics</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="replies-admins/show-replies.html"
+                            <a class="nav-link" href="<?php echo APPURL; ?>/replies-admins/show-replies.php"
                                 style="margin-left: 20px;">Replies</a>
                         </li>
                     </ul>
+                    <?php endif; ?>
                     <ul class="navbar-nav ml-md-auto d-md-flex">
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo APPURL; ?>/index.php">Home
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
+                        <?php if(isset($_SESSION["adminname"])): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <?php echo $_SESSION["adminname"]; ?>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item"
+                                    href="<?php echo APPURL; ?>/admins/logout-admins.php">Logout</a>
+                            </div>
+                        </li>
+                        <?php else: ?>
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo APPURL; ?>/admins/login-admins.php">login
                                 <span class="sr-only">(current)</span>
                             </a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                username
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">Logout</a>
-
-                        </li>
-
-
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>

@@ -43,8 +43,9 @@
                         <?php foreach($listTopics as $topic): ?>
                         <li class="topic">
                             <div class="row">
-                                <div class="col-md-2">
-                                    <img class="avatar pull-left" style="border-radius: 50%"
+                                <div class="col-md-2 d-flex justify-content-center align-items-center">
+                                    <img class="avatar pull-left"
+                                        style="border-radius: 50%; width: 85px; height: 85px; place-items: center;"
                                         src="<?= !empty($topic->avatar) ? 'img/' . $topic->avatar : 'img/gravatar.png' ?>" />
                                 </div>
                                 <div class="col-md-10">
