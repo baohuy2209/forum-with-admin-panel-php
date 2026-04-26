@@ -29,10 +29,10 @@
                             <td><?php echo $category->name; ?></td>
                             <td><a href="<?php echo APPURL; ?>/categories-admins/update-category.php?id=<?php echo $category->id; ?>"
                                     class="btn btn-warning text-white text-center ">Update
-                                    Categories</a></td>
+                                    Category</a></td>
                             <td><a href="<?php echo APPURL; ?>/categories-admins/delete-category.php?id=<?php echo $category->id; ?>"
                                     class="btn btn-danger text-center ">Delete
-                                    Categories</a></td>
+                                    Category</a></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
